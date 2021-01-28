@@ -21,9 +21,6 @@ $comment2->setComment('To make a long story short. Choosing a frame-work must no
 $comment2->setBlog($blog1);
 $blog1->addComment($comment1);
 $blog1->addComment($comment2); 
-// $blog1->set();
-// $comment1->set();
-// $comment2->set();
 
 //BLOG 2 
 $blog2 = new Blog(); 
@@ -112,6 +109,7 @@ $comment14->setComment('Oh, come on, Stan. Not everything ends the way you think
 $comment14->setBlog($blog3);
 $blog3->addComment($comment13);
 $blog3->addComment($comment14);
+
 //BLOG 4 
 $blog4 = new Blog();
 $blog4->setTitle('The grid - A digital frontier');
@@ -140,6 +138,14 @@ $comment16->setComment('Bill Who?');
 $comment16->setBlog($blog5);
 $blog5->addComment($comment15);
 $blog5->addComment($comment16);
+
 $blogs = [$blog1, $blog2, $blog3, $blog4, $blog5,];
 $comments = [$comment1, $comment2, $comment3, $comment4, $comment5, $comment6, $comment7, $comment8, $comment9, $comment10, $comment11, $comment12, $comment13, $comment14, $comment15, $comment16,];
+
+// foreach ($blogs as $blog) {
+//     $blog->set();
+// }
+// foreach ($comments as $comment) {
+//     $comment->set();
+// }
 ?>
