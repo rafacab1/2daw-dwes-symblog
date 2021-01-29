@@ -1,0 +1,12 @@
+{
+    "name" : "app/symblog",
+    "description": "Symblog es un blog para probar y usar bases de datos con PHP",
+    "autoload": {
+        "psr-4": {
+            "App\\":"app/"
+        }
+    },
+    "require" : {
+        "illuminate/database": "^8.25"
+    }
+}

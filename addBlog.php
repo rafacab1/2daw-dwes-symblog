@@ -1,27 +1,35 @@
 <?php
-    // include("datos/datos.php");
-    require_once 'vendor/autoload.php';
-    use App\Models\Blog;
 
-    // Eloquent
-    use Illuminate\Database\Capsule\Manager as Capsule;
-    $capsule = new Capsule;
-    $capsule->addConnection([
-        'driver'    => 'mysql',
-        'host'      => 'localhost',
-        'database'  => 'symblog',
-        'username'  => 'root',
-        'password'  => '',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
-        'prefix'    => '',
-    ]);
-    // Make this Capsule instance available globally via static methods... (optional)
-    $capsule->setAsGlobal();
-    // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-    $capsule->bootEloquent();
+require_once 'vendor/autoload.php';
+use App\Models\Blog;
 
-    $blogs = Blog::all();
+// Eloquent
+use Illuminate\Database\Capsule\Manager as Capsule;
+$capsule = new Capsule;
+$capsule->addConnection([
+    'driver'    => 'mysql',
+    'host'      => 'localhost',
+    'database'  => 'symblog',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+// Make this Capsule instance available globally via static methods... (optional)
+$capsule->setAsGlobal();
+// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+$capsule->bootEloquent();
+
+if (!empty($_POST)) {
+    $blog = new Blog();
+    $blog->titulo = $_POST['titulo'];
+    $blog->blog = $_POST['descripcion'];
+    $blog->tags = $_POST['tags'];
+    $blog->autor = $_POST['autor'];
+    $blog->save();
+    header("Location: index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,27 +63,19 @@
             </hgroup>
         </header>
         <section class="main-col">
+        <!-- Formulario -->
         <?php
-            foreach ($blogs as $clave => $blog) {
-                echo "<article class=\"blog\">";
-                echo "<div class=\"date\">";
-                echo "<time datetime=\"\"></time>";
-                echo "</div>";
-                echo "<header>";
-                echo "<h2><a href=\"show.php?id=" . $blog->id . "\">" . $blog->titulo ."</a></h2>";
-                echo "</header>";
-                echo "<img src=\"" . $blog->image . "\" />";
-                echo "<div class=\"snippet\">";
-                echo "<p>" . $blog->blog . "</p>";
-                echo "<p class=\"continue\"><a href=\"show.php?id=" . $clave . "\">Continue reading...</a></p>";
-                echo "</div>";
-                echo "<footer class=\"meta\">";
-                // echo "    <p>Comments: <a href=\"#\">" . count($blog->getComments()) . "</a></p>";
-                echo "    <p>Posted by <span class=\"highlight\">" . $blog->autor . "</span> at " . $blog->created_at->format('Y-m-d H:i:s') . "</p>";
-                echo "    <p>Tags: <span class=\"highlight\">" . $blog->tags . "</span></p>";
-                echo "</footer>";
-                echo "</article>";
-            }
+            echo "<form method=\"POST\" action=\"" . $_SERVER['PHP_SELF'] . "\">";
+            echo "<label for=\"titulo\">Título</label>";
+            echo "<input type=\"text\" name=\"titulo\" id=\"titulo\">";
+            echo "<label for=\"descripcion\">Descripción</label>";
+            echo "<textarea name=\"descripcion\" id=\"descripcion\" cols=\"30\" rows=\"10\"></textarea>";
+            echo "<label for=\"tags\">Tags</label>";
+            echo "<input type=\"text\" name=\"tags\" id=\"tags\">";
+            echo "<label for=\"autor\">Autor</label>";
+            echo "<input type=\"text\" name=\"autor\" id=\"autor\">";
+            echo "<input type=\"submit\" value=\"Guardar blog\" name=\"guardar\">";
+            echo "</form>";
         ?>
         </section>
         <aside class="sidebar">

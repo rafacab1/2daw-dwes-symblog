@@ -1,6 +1,6 @@
 <?php
-require_once("DBAbstractModel.php");
-class Comment extends DBAbstractModel {
+namespace app\Models;
+class Comment {
 
     public function __construct() {
         
@@ -34,21 +34,8 @@ class Comment extends DBAbstractModel {
         if (isset($this->_created)) {
             return $this->_created;
         } else {
-            return new Datetime();
+            return new \Datetime();
         }
-    }
-
-    // BD
-    public function set() {
-        $this->query = "INSERT INTO comment(blog_id, user, comment, approved) VALUES(:blogId, :user, :comment, :approved)";
-        // $this->parametros['id']=$id;
-        $this->parametros['blogId']=$this->_blog->lastInsert();
-        $this->parametros['user']=$this->_user;
-        $this->parametros['comment']=$this->_comment;
-        $this->parametros['approved']=1;
-        $this->get_results_from_query();
-        // $this->execute_single_query();
-        $this->mensaje = 'SH agregado correctamente';
     }
 }
 ?>

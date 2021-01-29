@@ -1,7 +1,6 @@
 <?php
-
-require("app/Models/Blog.php");
-require("app/Models/Comment.php");
+require 'vendor/autoload.php';
+use App\Models\{Blog, Comment};
 
 $blog1 = new Blog();
 $blog1->setTitle('A day with Symfony2');
