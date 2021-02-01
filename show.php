@@ -1,5 +1,6 @@
 <?php
-    include("datos/datos.php");
+use App\Models\Blog;
+
 ?>
 
 <!DOCTYPE html>
@@ -17,18 +18,19 @@
 <body>
     <section id="wrapper">
         <header id="header">
-            <div class="top">
+        <div class="top">
                 <nav>
                     <ul class="navigation">
-                        <li><a href="index_sb.php">Home</a></li>
-                        <li><a href="about_sb.php">About</a></li>
-                        <li><a href="contact_sb.php">Contact</a></li>
+                        <li><a href="?route=/">Home</a></li>
+                        <li><a href="?route=about">About</a></li>
+                        <li><a href="?route=contact">Contact</a></li>
+                        <li><a href="?route=add">Add blog</a></li>
                     </ul>
                 </nav>
             </div>
             <hgroup>
-                <h2><a href="index_sb.php/">symblog</a></h2>
-                <h3><a href="index_sb.php/">creating a blog in Symfony2</a></h3>
+                <h2><a href="?route=/">symblog</a></h2>
+                <h3><a href="?route=/">creating a blog in Symfony2</a></h3>
             </hgroup>
         </header>
         <section class="main-col">
@@ -38,22 +40,22 @@
                 echo "<time datetime=\"\"></time>";
                 echo "</div>";
                 echo "<header>";
-                echo "<h2><a href=\"show.php?id=\"#\">" . $blogs[$_GET['id']]->getTitle() ."</a></h2>";
+                echo "<h2><a href=\"show.php?id=\"#\">" . $theBlog->titulo ."</a></h2>";
                 echo "</header>";
-                echo "<img src=\"" . $blogs[$_GET['id']]->getImage() . "\" />";
+                echo "<img src=\"" . $theBlog->imagen . "\" />";
                 echo "<div class=\"snippet\">";
-                echo "<p>" . $blogs[$_GET['id']]->getBlog() . "</p>";
+                echo "<p>" . $theBlog->blog . "</p>";
                 echo "</div>";
                 echo "<footer class=\"meta\">";
-                echo "    <p>Posted by <span class=\"highlight\">" . $blogs[$_GET['id']]->getAuthor() . "</span> at " . $blogs[$_GET['id']]->getCreated()->format('Y-m-d H:i:s') . "</p>";
-                echo "    <p>Tags: <span class=\"highlight\">" . $blogs[$_GET['id']]->getTags() . "</span></p>";
+                echo "    <p>Posted by <span class=\"highlight\">" . $theBlog->autor . "</span> at " . $theBlog->created_at->format('Y-m-d H:i:s') . "</p>";
+                echo "    <p>Tags: <span class=\"highlight\">" . $theBlog->tags . "</span></p>";
                 echo "</footer>";
                 echo "<div class=\"comments\">";
                 echo "<h3>Comments</h3>";
-                foreach ($blogs[$_GET['id']]->getComments() as $key => $comentario) {
+                foreach (Blog::find($theBlog->id)->comments as $comentario) {
                     echo "<div class=\"comment\">";
-                    echo "<p>" . $comentario->getUser() . " comentó el " . $comentario->getCreated()->format('Y-m-d H:i:s') . "</p>";
-                    echo "<p>" . $comentario->getComment() . "</p>";
+                    echo "<p>" . $comentario->user . " comentó el " . $comentario->created_at->format('Y-m-d H:i:s') . "</p>";
+                    echo "<p>" . $comentario->comment . "</p>";
                     echo "</div>";
                 }
                 echo "</div>";

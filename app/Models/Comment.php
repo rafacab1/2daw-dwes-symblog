@@ -1,41 +1,13 @@
 <?php
-namespace app\Models;
-class Comment {
+namespace App\Models;
 
-    public function __construct() {
-        
-    }
-    
-    public function setUser($user) {
-        $this->_user = $user;
-    }
+use Illuminate\Database\Eloquent\Model;
 
-    public function setComment($comment) {
-        $this->_comment = $comment;
-    }
+class Comment extends Model {
+    protected $table = 'comment';
 
-    public function setBlog($blog) {
-        $this->_blog = $blog;
-    }
-
-    public function setCreated($created) {
-        $this->_created = $created;
-    }
-
-    public function getUser() {
-        return $this->_user;
-    }
-
-    public function getComment() {
-        return $this->_comment;
-    }
-
-    public function getCreated() {
-        if (isset($this->_created)) {
-            return $this->_created;
-        } else {
-            return new \Datetime();
-        }
+    public function blog() {
+        return $this->belongsTo(Blog::class);
     }
 }
 ?>

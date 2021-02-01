@@ -1,37 +1,3 @@
-<?php
-
-require_once 'vendor/autoload.php';
-use App\Models\Blog;
-
-// Eloquent
-use Illuminate\Database\Capsule\Manager as Capsule;
-$capsule = new Capsule;
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'symblog',
-    'username'  => 'root',
-    'password'  => '',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-    'prefix'    => '',
-]);
-// Make this Capsule instance available globally via static methods... (optional)
-$capsule->setAsGlobal();
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-$capsule->bootEloquent();
-
-if (!empty($_POST)) {
-    $blog = new Blog();
-    $blog->titulo = $_POST['titulo'];
-    $blog->blog = $_POST['descripcion'];
-    $blog->tags = $_POST['tags'];
-    $blog->autor = $_POST['autor'];
-    $blog->save();
-    header("Location: index.php");
-}
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,24 +8,25 @@ if (!empty($_POST)) {
     <link href="css/sidebar.css" type="text/css" rel="stylesheet" />
     <link href="css/blog.css" type="text/css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Añadir entrada</title>
 </head>
 
 <body>
     <section id="wrapper">
         <header id="header">
-            <div class="top">
+        <div class="top">
                 <nav>
                     <ul class="navigation">
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="about.php">About</a></li>
-                        <li><a href="contact.php">Contact</a></li>
-                        <li><a href="addBlog.php">Add blog</a></li>
+                        <li><a href="?route=/">Home</a></li>
+                        <li><a href="?route=about">About</a></li>
+                        <li><a href="?route=contact">Contact</a></li>
+                        <li><a href="?route=add">Add blog</a></li>
                     </ul>
                 </nav>
             </div>
             <hgroup>
-                <h2><a href="index.php">symblog</a></h2>
-                <h3><a href="index.php">creating a blog in Symfony2</a></h3>
+                <h2><a href="?route=/">symblog</a></h2>
+                <h3><a href="?route=/">creating a blog in Symfony2</a></h3>
             </hgroup>
         </header>
         <section class="main-col">
