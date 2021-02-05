@@ -9,5 +9,9 @@ class Blog extends Model{
     public function comments() {
         return $this->hasMany(Comment::class);
     }
+
+    public function numComments() {
+        return count(Blog::find($this->id)->comments);
+    }
 }
 ?>

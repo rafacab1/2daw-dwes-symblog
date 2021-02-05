@@ -29,9 +29,6 @@ $capsule->setAsGlobal();
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
 
-// Blogs
-$blogs = Blog::all();
-
 // Diactoros
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals(
     $_SERVER,
@@ -47,41 +44,25 @@ $routerContainer = new RouterContainer();
 // Mapa de rutas
 $map = $routerContainer->getMap();
 // Los parámetros de get son nombre de ruta, url y respuesta
-$map->get('index', '/', '../index.php');
-$map->get('addBlog', '/blogs/add', '../addBlog.php');
+$map->get('index', '/', ['controller'=>'App\Controllers\IndexController','action'=>'indexAction']);
+$map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'getAddBlogAction']);
+$map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction']);
+// TODO: Implementar show
+$map->get('show', '/blogs/', ['controller'=>'App\Controllers\ShowController', 'action'=>'showAction']);
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
 if (!$route) {
     echo 'No route';
 } else {
-    require $route->handler;
+    // Aprovechamos la posibilidad que nos da php
+    // de crear clases con el nombre almacenado en
+    // una variable
+    $handlerData = $route->handler;
+    $controllerName = $handlerData['controller'];
+    $actionName = $handlerData['action'];
+
+    $controller = new $controllerName;
+    $controller->$actionName();
 }
-var_dump($route->handler);
-
-
-if (!empty($_POST)) {
-    $blog = new Blog();
-    $blog->titulo = $_POST['titulo'];
-    $blog->blog = $_POST['descripcion'];
-    $blog->tags = $_POST['tags'];
-    $blog->autor = $_POST['autor'];
-    $blog->save();
-    header("Location: ?route=/");
-}
-
-// $route = $_GET['route'] ?? '/';
-// if ($route == '/') {
-//     // index
-//     require '../index.php';
-// } elseif ($route == 'add') {
-//     // Add blog
-//     require '../addBlog.php';
-// } elseif ($route == 'show') {
-//     $theBlog = $blogs->where('id', '=', $_GET['id'])[$_GET['id']-1];
-//     require '../show.php';
-// } else {
-//     print_r($_GET);
-//     echo "Sin ruta";
-// }
 ?>

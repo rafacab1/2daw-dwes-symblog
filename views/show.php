@@ -21,16 +21,16 @@ use App\Models\Blog;
         <div class="top">
                 <nav>
                     <ul class="navigation">
-                        <li><a href="?route=/">Home</a></li>
-                        <li><a href="?route=about">About</a></li>
-                        <li><a href="?route=contact">Contact</a></li>
-                        <li><a href="?route=add">Add blog</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/blogs/add">Add blog</a></li>
                     </ul>
                 </nav>
             </div>
             <hgroup>
-                <h2><a href="?route=/">symblog</a></h2>
-                <h3><a href="?route=/">creating a blog in Symfony2</a></h3>
+                <h2><a href="/">symblog</a></h2>
+                <h3><a href="/">creating a blog in Symfony2</a></h3>
             </hgroup>
         </header>
         <section class="main-col">

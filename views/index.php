@@ -8,41 +8,49 @@
     <link href="css/sidebar.css" type="text/css" rel="stylesheet" />
     <link href="css/blog.css" type="text/css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>Añadir entrada</title>
+    <title>Symblog</title>
 </head>
 
 <body>
     <section id="wrapper">
-        <header id="header">
+    <header id="header">
         <div class="top">
                 <nav>
                     <ul class="navigation">
-                        <li><a href="?route=/">Home</a></li>
-                        <li><a href="?route=about">About</a></li>
-                        <li><a href="?route=contact">Contact</a></li>
-                        <li><a href="?route=add">Add blog</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                        <li><a href="/blogs/add">Add blog</a></li>
                     </ul>
                 </nav>
             </div>
             <hgroup>
-                <h2><a href="?route=/">symblog</a></h2>
-                <h3><a href="?route=/">creating a blog in Symfony2</a></h3>
+                <h2><a href="/">symblog</a></h2>
+                <h3><a href="/">creating a blog in Symfony2</a></h3>
             </hgroup>
         </header>
         <section class="main-col">
-        <!-- Formulario -->
         <?php
-            echo "<form method=\"POST\" action=\"" . $_SERVER['PHP_SELF'] . "\">";
-            echo "<label for=\"titulo\">Título</label>";
-            echo "<input type=\"text\" name=\"titulo\" id=\"titulo\">";
-            echo "<label for=\"descripcion\">Descripción</label>";
-            echo "<textarea name=\"descripcion\" id=\"descripcion\" cols=\"30\" rows=\"10\"></textarea>";
-            echo "<label for=\"tags\">Tags</label>";
-            echo "<input type=\"text\" name=\"tags\" id=\"tags\">";
-            echo "<label for=\"autor\">Autor</label>";
-            echo "<input type=\"text\" name=\"autor\" id=\"autor\">";
-            echo "<input type=\"submit\" value=\"Guardar blog\" name=\"guardar\">";
-            echo "</form>";
+            foreach ($blogs as $clave => $blog) {
+                echo "<article class=\"blog\">";
+                echo "<div class=\"date\">";
+                echo "<time datetime=\"\"></time>";
+                echo "</div>";
+                echo "<header>";
+                echo "<h2><a href=\"?route=show&id=" . $blog->id . "\">" . $blog->titulo ."</a></h2>";
+                echo "</header>";
+                echo "<img src=\"" . $blog->imagen . "\" />";
+                echo "<div class=\"snippet\">";
+                echo "<p>" . $blog->blog . "</p>";
+                echo "<p class=\"continue\"><a href=\"?route=show&id=" . $blog->id . "\">Continue reading...</a></p>";
+                echo "</div>";
+                echo "<footer class=\"meta\">";
+                echo "    <p>Comments: <a href=\"#\">" . $blog->numComments() . "</a></p>";
+                echo "    <p>Posted by <span class=\"highlight\">" . $blog->autor . "</span> at " . $blog->created_at->format('Y-m-d H:i:s') . "</p>";
+                echo "    <p>Tags: <span class=\"highlight\">" . $blog->tags . "</span></p>";
+                echo "</footer>";
+                echo "</article>";
+            }
         ?>
         </section>
         <aside class="sidebar">
