@@ -6,7 +6,9 @@ class IndexController extends BaseController {
     public function indexAction() {
         // Blogs
         $blogs = Blog::all();
-        echo $this->render('index.twig', array("blogs"=>$blogs));
+        return $this->render('index.twig', array(
+            "blogs"=>$blogs
+        ));
     }
 }
 

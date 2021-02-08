@@ -4,7 +4,7 @@ use App\Models\Blog;
 
 class BlogsController extends BaseController {
     public function getAddBlogAction() {
-        echo $this->render('addBlog.twig', array("nEntrada"=>"Nueva entrada"));
+        return $this->render('addBlog.twig', array("nEntrada"=>"Nueva entrada"));
     }
     
     public function postAddBlogAction($request) {
@@ -15,6 +15,18 @@ class BlogsController extends BaseController {
             $blog->blog = $postData['descripcion'];
             $blog->tags = $postData['tags'];
             $blog->autor = $postData['autor'];
+
+            // Archivos
+            $files = $request->getUploadedFiles();
+            var_dump($files);
+            $image = $files['image'];
+            if ($image->getError() == UPLOAD_ERR_OK) {
+                $nombreArchivo = $image->getClientFilename();
+                $nombreArchivo = "img/" . uniqid().$nombreArchivo;
+                $image->moveTo($nombreArchivo);
+                $blog->imagen = $nombreArchivo;
+            }
+
             $blog->save();
             header("Location: /");
         }
