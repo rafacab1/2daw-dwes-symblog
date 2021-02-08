@@ -63,6 +63,6 @@ if (!$route) {
     $actionName = $handlerData['action'];
 
     $controller = new $controllerName;
-    $controller->$actionName();
+    $controller->$actionName($request);
 }
 ?>

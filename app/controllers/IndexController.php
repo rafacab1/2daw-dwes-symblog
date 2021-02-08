@@ -2,11 +2,11 @@
 namespace App\Controllers;
 use App\Models\Blog;
 
-class IndexController {
+class IndexController extends BaseController {
     public function indexAction() {
         // Blogs
         $blogs = Blog::all();
-        include '..\views\index.php';
+        echo $this->render('index.twig', array("blogs"=>$blogs));
     }
 }
 

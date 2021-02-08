@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html" ; charset="utf-8" />
     <link href='http://fonts.googleapis.com/css?family=Irish+Grover' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
-    <link href="css/screen.css" type="text/css" rel="stylesheet" />
-    <link href="css/sidebar.css" type="text/css" rel="stylesheet" />
-    <link href="css/blog.css" type="text/css" rel="stylesheet" />
+    <link href="../css/screen.css" type="text/css" rel="stylesheet" />
+    <link href="../css/sidebar.css" type="text/css" rel="stylesheet" />
+    <link href="../css/blog.css" type="text/css" rel="stylesheet" />
     <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>Symblog</title>
+    <title>Añadir entrada</title>
 </head>
 
 <body>
     <section id="wrapper">
-    <header id="header">
+        <header id="header">
         <div class="top">
                 <nav>
                     <ul class="navigation">
@@ -30,28 +30,19 @@
             </hgroup>
         </header>
         <section class="main-col">
-        <?php
-            foreach ($blogs as $clave => $blog) {
-                echo "<article class=\"blog\">";
-                echo "<div class=\"date\">";
-                echo "<time datetime=\"\"></time>";
-                echo "</div>";
-                echo "<header>";
-                echo "<h2><a href=\"?route=show&id=" . $blog->id . "\">" . $blog->titulo ."</a></h2>";
-                echo "</header>";
-                echo "<img src=\"" . $blog->imagen . "\" />";
-                echo "<div class=\"snippet\">";
-                echo "<p>" . $blog->blog . "</p>";
-                echo "<p class=\"continue\"><a href=\"?route=show&id=" . $blog->id . "\">Continue reading...</a></p>";
-                echo "</div>";
-                echo "<footer class=\"meta\">";
-                echo "    <p>Comments: <a href=\"#\">" . $blog->numComments() . "</a></p>";
-                echo "    <p>Posted by <span class=\"highlight\">" . $blog->autor . "</span> at " . $blog->created_at->format('Y-m-d H:i:s') . "</p>";
-                echo "    <p>Tags: <span class=\"highlight\">" . $blog->tags . "</span></p>";
-                echo "</footer>";
-                echo "</article>";
-            }
-        ?>
+            <h1>{{nEntrada}}</h1>
+            <!-- Formulario -->
+            <form method="POST" action="/blogs/add">
+            <label for="titulo">Título</label>
+            <input type="text" name="titulo" id="titulo">
+            <label for="descripcion">Descripción</label>
+            <textarea name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
+            <label for="tags">Tags</label>
+            <input type="text" name="tags" id="tags">
+            <label for="autor">Autor</label>
+            <input type="text" name="autor" id="autor">
+            <input type="submit" value="Guardar blog" name="guardar">
+            </form>
         </section>
         <aside class="sidebar">
             <section class="section">
