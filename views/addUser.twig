@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+{% block body %}
+            <h1>Nuevo usuario</h1>
+            <!-- Formulario -->
+            <form method="POST" action="/users/add">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" id="password">
+            <input type="submit" value="Registrar usuario" name="registrar">
+            </form>
+            <br/>
+            {% if error %}
+            <p class="salidaError">{{msg}}</p>
+            {% else %}
+            <p>{{msg}}</p>
+            {% endif %}
+{% endblock %}

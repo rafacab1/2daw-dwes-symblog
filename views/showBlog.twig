@@ -1,6 +1,5 @@
 {% extends 'layout.twig' %}
 {% block body %}
-{% for blog in blogs %}
             <article class="blog">
             <div class="date">
             <time datetime=""></time>
@@ -8,16 +7,22 @@
             <header>
             <h2><a href="/blogs/{{blog.id}}">{{blog.titulo}}</a></h2>
             </header>
-            <img src="{{blog.imagen}}" />
+            <img src="../{{blog.imagen}}" />
             <div class="snippet">
-            <p>{{blog.blog|slice(0, 700)}}</p>
-            <p class="continue"><a href="/blogs/{{blog.id}}">Continue reading...</a></p>
+            <p>{{blog.blog}}</p>
             </div>
             <footer class="meta">
-                <p>Comments: <a href="#">{{blog.numComments()}}</a></p>
                 <p>Posted by <span class="highlight">{{blog.autor}}</span> at {{blog.created_at.format('Y-m-d H:i:s')}}</p>
                 <p>Tags: <span class="highlight">{{blog.tags}}</span></p>
             </footer>
+            <div class="comments">
+            <h3>Comments</h3>
+            {% for comentario in comentarios %}
+                <div class="comment">
+                <p>{{comentario.user}} comentó el {{comentario.created_at.format('Y-m-d H:i:s')}}</p>
+                <p>{{comentario.comment}}</p>
+                </div>
+            {% endfor %}
+            </div>
             </article>
-{% endfor %}
 {% endblock %}

@@ -47,8 +47,12 @@ $map = $routerContainer->getMap();
 $map->get('index', '/', ['controller'=>'App\Controllers\IndexController','action'=>'indexAction']);
 $map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'getAddBlogAction']);
 $map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction']);
-// TODO: Implementar show
-$map->get('show', '/blogs/', ['controller'=>'App\Controllers\ShowController', 'action'=>'showAction']);
+// show
+$map->get('showBlog', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'showBlog'])->tokens(['id'=>'\d+']);
+
+// /users/add
+$map->get('addUserGet', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser']);
+$map->post('addUserPost', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser']);
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);

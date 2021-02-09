@@ -239,3 +239,10 @@ main-col p {
     padding: 10px;
     color: #aaa;
 }
+
+.salidaError {
+    background-color: lightcoral;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}

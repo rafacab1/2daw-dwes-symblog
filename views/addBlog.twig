@@ -15,4 +15,10 @@
             <input type="file" name="image" id="image">
             <input type="submit" value="Guardar blog" name="guardar">
             </form>
+            <br/>
+            {% if error %}
+            <p class="salidaError">{{msg}}</p>
+            {% else %}
+            <p>{{msg}}</p>
+            {% endif %}
 {% endblock %}

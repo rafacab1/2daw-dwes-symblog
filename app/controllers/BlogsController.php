@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Blog;
+use Respect\Validation\Validator as v;
 
 class BlogsController extends BaseController {
     public function getAddBlogAction() {
@@ -10,26 +11,38 @@ class BlogsController extends BaseController {
     public function postAddBlogAction($request) {
         if ($request->getMethod() == 'POST') {
             $postData = $request->getParsedBody();
-            $blog = new Blog();
-            $blog->titulo = $postData['titulo'];
-            $blog->blog = $postData['descripcion'];
-            $blog->tags = $postData['tags'];
-            $blog->autor = $postData['autor'];
+            // Mensaje
+            $msg = null;
+            $error = false;
+            // Definición de la validación
+            $validador = v::key('titulo', v::stringType()->notEmpty())->key('descripcion', v::stringType()->notEmpty());
 
-            // Archivos
-            $files = $request->getUploadedFiles();
-            var_dump($files);
-            $image = $files['image'];
-            if ($image->getError() == UPLOAD_ERR_OK) {
-                $nombreArchivo = $image->getClientFilename();
-                $nombreArchivo = "img/" . uniqid().$nombreArchivo;
-                $image->moveTo($nombreArchivo);
-                $blog->imagen = $nombreArchivo;
+            try {
+                // Validar datos
+                $validador->assert($postData);
+                $blog = new Blog();
+                $blog->titulo = $postData['titulo'];
+                $blog->blog = $postData['descripcion'];
+                $blog->tags = $postData['tags'];
+                $blog->autor = $postData['autor'];
+                // Archivos
+                $files = $request->getUploadedFiles();
+                $image = $files['image'];
+                if ($image->getError() == UPLOAD_ERR_OK) {
+                    $nombreArchivo = $image->getClientFilename();
+                    $nombreArchivo = "img/" . uniqid().$nombreArchivo;
+                    $image->moveTo($nombreArchivo);
+                    $blog->imagen = $nombreArchivo;
+                }
+                $blog->save();
+                $msg = "Entrada guardada";
+            } catch (\Exception $e) {
+                // $msg = $e->getMessage();
+                $msg = "Debes rellenar al menos el título y la descripción.";
+                $error = true;
             }
-
-            $blog->save();
-            header("Location: /");
         }
+        return $this->render('addBlog.twig', array("nEntrada"=>"Nueva entrada", "msg"=>$msg, "error"=>$error));
     }
 }
 
