@@ -4,7 +4,7 @@
 <h3>Tag Cloud</h3>
 </header>
 <p class="tags">
-{% for tag, weight in tags %}
+{% for weight, tag in tags %}
 <span class="weight-{{ weight }}">{{ tag }}</span>
 {% else %}
 <p>There are no tags</p>
@@ -18,11 +18,11 @@
 {% for comment in latestComments %}
 <article class="comment">
 <header>
-<p class="small"><span class="highlight">{{ comment.user }}</span> commented on
+<a href="/blogs/{{comment.blog_id}}"><p class="small"><span class="highlight">{{ comment.user }}</span> commented </a>{#on
 <a href="#', { 'id': comment.blog.id }) }}#comment-{{ comment.id }}">
 {{ comment.blog.title }}
-</a>
-<!--em><time datetime="{{ comment.created|date('c') }}">{{ comment.created|date('Y-m-d h:iA') }}</time></em-->
+</a> #}
+{# <!--em><time datetime="{{ comment.created|date('c') }}">{{ comment.created|date('Y-m-d h:iA') }}</time></em--> #}
 </p>
 </header>
 <p>{{ comment.comment }}</p>
