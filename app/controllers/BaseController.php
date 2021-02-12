@@ -26,6 +26,8 @@ class BaseController {
 
         // Recent comments
         $allComments = Comment::all();
+        // Convert object from Eloquent to php array and reverse it
+        $allComments = array_reverse(json_decode(json_encode($allComments), true));
         $comments = [];
         $counter = 0;
         foreach ($allComments as $comment) {

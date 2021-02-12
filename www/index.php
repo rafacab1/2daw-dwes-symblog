@@ -52,7 +52,9 @@ $map->get('index', '/', ['controller'=>'App\Controllers\IndexController','action
 $map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'getAddBlogAction', 'auth' => true]);
 $map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction', 'auth' => true]);
 // show
-$map->get('showBlog', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'showBlog'])->tokens(['id'=>'\d+']);
+$map->get('showBlog', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'getShowBlog'])->tokens(['id'=>'\d+']);
+// show - postComment
+$map->post('postComment', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'postComment'])->tokens(['id'=>'\d+']);
 // /users/login
 $map->get('loginGet', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'getLogin']);
 $map->post('loginPost', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'postLogin']);

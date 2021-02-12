@@ -23,6 +23,21 @@
                 <p>{{comentario.comment}}</p>
                 </div>
             {% endfor %}
+            <!-- Nuevo comentario -->
+            <h1>Nuevo comentario</h1>
+            <form method="POST" action="/blogs/{{blog.id}}">
+            <label for="autor">Usuario</label>
+            <input type="text" name="autor" id="autor">
+            <label for="comentario">Comentario</label>
+            <textarea name="comentario" id="comentario" cols="30" rows="10"></textarea>
+            <input type="submit" value="Enviar comentario" name="Enviar">
+            <br/><br/>
+            {% if error %}
+            <p class="salidaError">{{msg}}</p>
+            {% else %}
+            <p>{{msg}}</p>
+            {% endif %}
+            </form>
             </div>
             </article>
 {% endblock %}
