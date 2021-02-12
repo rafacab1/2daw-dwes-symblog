@@ -53,25 +53,35 @@ $map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsControll
 $map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction', 'auth' => true]);
 // show
 $map->get('showBlog', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'showBlog'])->tokens(['id'=>'\d+']);
-
 // /users/login
 $map->get('loginGet', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'getLogin']);
 $map->post('loginPost', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'postLogin']);
-
 // /users/add
 $map->get('addUserGet', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser', 'auth' => true]);
 $map->post('addUserPost', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser', 'auth' => true]);
-
 // Admin dashboard
 $map->get('adminDashboard', '/admin', ['controller' =>  'App\Controllers\AdminController', 'action' => 'getCPAdmin', 'auth' => true]);
-
 // Logout
 $map->get('logout', '/logout', ['controller' => 'App\Controllers\AuthController', 'action' => 'getLogout']);
+// 404
+$map->get('notFound', '/404', ['controller' => 'App\Controllers\ErrorsController', 'action' => 'notFound']);
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
 if (!$route) {
-    echo 'No route';
+    $failedRoute = $matcher->getFailedRoute();
+
+    switch ($failedRoute) {
+        case 'Aura\Router\Rule\Allows':
+            echo 'Error 405';
+            break;
+        case 'Aura\Router\Rule\Accepts';
+            echo 'Error 406';
+            break;
+        default:
+            header('Location: /404');
+            break;
+    }
 } else {
     // Aprovechamos la posibilidad que nos da php
     // de crear clases con el nombre almacenado en

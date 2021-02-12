@@ -15,6 +15,11 @@ class BaseController {
     }
 
     public function render($filename, $data=[]) {
+        $loged = null;
+        if (isset($_SESSION['user'])) {
+            $loged = $_SESSION['user'];
+        }
+        $data = array_merge($data, array("user" => $loged));
         return new HtmlResponse($this->templateEngine->render($filename, $data));
     }
 }

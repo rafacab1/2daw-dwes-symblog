@@ -24,7 +24,13 @@
 <li><a href="/">Home</a></li>
 <li><a href="#">About</a></li>
 <li><a href="#">Contact</a></li>
+{% if user != null %}
+<li><a href="/admin">Welcome, {{user}}</a></li>
+<li><a href="/admin">Admin Dashboard</a></li>
+<li><a href="/logout">Logout</a></li>
+{% else %}
 <li><a href="/users/login">Login</a></li>
+{% endif %}
 </ul>
 </nav>
 {% endblock %}

@@ -6,6 +6,9 @@ use Laminas\Diactoros\Response\RedirectResponse;
 
 class AuthController extends BaseController {
     public function getLogin() {
+        if (isset($_SESSION['user'])) {
+            header('Location: /admin');
+        }
         return $this->render('login.twig');
     }
 
@@ -17,7 +20,7 @@ class AuthController extends BaseController {
         $user = User::where('email', $post['email'])->first();
         if ($user) {
             if (password_verify($post['password'], $user->password)) {
-                $_SESSION['user'] = $user;
+                $_SESSION['user'] = $user->email;
                 $responseMessage = 'Sesión iniciada';
                 header('Location: /admin');
             } else {
