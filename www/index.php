@@ -6,20 +6,24 @@ ini_set('display_errors', 1);
 ini_set('display_starup_error', 1);
 error_reporting(E_ALL);
 
-require_once '../vendor/autoload.php';
+// Inicio de sesión
+session_start();
 
-use App\Models\Blog;
+require_once '../vendor/autoload.php';
 use Aura\Router\RouterContainer;
 // Eloquent
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..' , 'dbconnect.env');
+$dotenv->load();
+
 $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'symblog',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $_ENV['DB_HOST'],
+    'database'  => $_ENV['DB_NAME'],
+    'username'  => $_ENV['DB_USER'],
+    'password'  => $_ENV['DB_PASS'],
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',
@@ -45,14 +49,24 @@ $routerContainer = new RouterContainer();
 $map = $routerContainer->getMap();
 // Los parámetros de get son nombre de ruta, url y respuesta
 $map->get('index', '/', ['controller'=>'App\Controllers\IndexController','action'=>'indexAction']);
-$map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'getAddBlogAction']);
-$map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction']);
+$map->get('addBlog', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'getAddBlogAction', 'auth' => true]);
+$map->post('addBlogPost', '/blogs/add', ['controller'=>'App\Controllers\BlogsController', 'action'=>'postAddBlogAction', 'auth' => true]);
 // show
 $map->get('showBlog', '/blogs/{id}', ['controller'=>'App\Controllers\ShowController', 'action'=>'showBlog'])->tokens(['id'=>'\d+']);
 
+// /users/login
+$map->get('loginGet', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'getLogin']);
+$map->post('loginPost', '/users/login', ['controller' => 'App\Controllers\AuthController', 'action' => 'postLogin']);
+
 // /users/add
-$map->get('addUserGet', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser']);
-$map->post('addUserPost', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser']);
+$map->get('addUserGet', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser', 'auth' => true]);
+$map->post('addUserPost', '/users/add', ['controller'=>'App\Controllers\AddUserController', 'action'=>'addUser', 'auth' => true]);
+
+// Admin dashboard
+$map->get('adminDashboard', '/admin', ['controller' =>  'App\Controllers\AdminController', 'action' => 'getCPAdmin', 'auth' => true]);
+
+// Logout
+$map->get('logout', '/logout', ['controller' => 'App\Controllers\AuthController', 'action' => 'getLogout']);
 
 $matcher = $routerContainer->getMatcher();
 $route = $matcher->match($request);
@@ -65,6 +79,15 @@ if (!$route) {
     $handlerData = $route->handler;
     $controllerName = $handlerData['controller'];
     $actionName = $handlerData['action'];
+    
+    // Autenticación
+    $auth = $handlerData['auth'] ?? false; // ¿Necesita esta ruta autenticación?
+    $sessionUser = $_SESSION['user'] ?? null; // ¿Existe el usuario?
+    if ($auth && !$sessionUser) {
+        // Si necesita autenticación pero no está logueado 
+        // va al login
+        header('Location: /users/login');
+    }
 
     $controller = new $controllerName;
     $response = $controller->$actionName($request);
