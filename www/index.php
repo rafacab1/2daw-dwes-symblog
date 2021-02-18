@@ -14,7 +14,7 @@ use Aura\Router\RouterContainer;
 // Eloquent
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-// $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '\..' , 'dbconnect.env');
+// $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '\..' , 'dbconnect.env');
 // $dotenv->load();
 
 $DATABASE_URL = parse_url(getenv("DATABASE_URL"));
